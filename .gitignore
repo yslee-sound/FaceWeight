@@ -1,0 +1,27 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Keystore / signing artifacts
+*.jks
+*.keystore
+*.p12
+keystore-local/
+# Common folders if someone mistakenly creates them inside repo
+keystore/
+keys/
+signing/
+
+# Generated reports / coverage (향후 도입 시)

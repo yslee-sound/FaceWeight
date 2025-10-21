@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- SDK 30+ 패키지 가시성: Play Store 존재 확인을 위해 선언 -->
+    <queries>
+        <package android:name="com.android.vending" />
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/app_icon"
+        android:roundIcon="@mipmap/app_icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AlcoholicTimer"
+        tools:targetApi="31">
+
+        <!-- 메인 액티비티 (시작 화면) -->
+        <activity
+            android:name="com.example.alcoholictimer.feature.start.StartActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AlcoholicTimer.Splash"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 기록 화면 -->
+        <activity
+            android:name="com.example.alcoholictimer.feature.records.RecordsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AlcoholicTimer" />
+
+        <!-- 모든 기록 화면 -->
+        <activity
+            android:name="com.example.alcoholictimer.feature.records.AllRecordsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AlcoholicTimer" />
+
+        <!-- 레벨 화면 -->
+        <activity
+            android:name="com.example.alcoholictimer.feature.level.LevelActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AlcoholicTimer" />
+
+        <!-- 설정 화면 -->
+        <activity
+            android:name="com.example.alcoholictimer.feature.settings.SettingsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AlcoholicTimer" />
+
+        <!-- 금주 진행 화면 -->
+        <activity
+            android:name="com.example.alcoholictimer.feature.run.RunActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AlcoholicTimer" />
+
+        <!-- 금주 종료 확인 화면 -->
+        <activity
+            android:name="com.example.alcoholictimer.feature.run.QuitActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AlcoholicTimer" />
+
+        <!-- 세부 기록 화면 -->
+        <activity
+            android:name="com.example.alcoholictimer.feature.detail.DetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AlcoholicTimer" />
+
+        <!-- 별명 편집 화면 -->
+        <activity
+            android:name="com.example.alcoholictimer.feature.profile.NicknameEditActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AlcoholicTimer" />
+
+        <!-- 사용자 기록 추가 화면 -->
+        <activity
+            android:name="com.example.alcoholictimer.feature.addrecord.AddRecordActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AlcoholicTimer" />
+
+        <!-- 앱 정보 화면 -->
+        <activity
+            android:name="com.example.alcoholictimer.feature.about.AboutActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AlcoholicTimer" />
+
+        <!-- 오픈 라이선스 상세 화면 -->
+        <activity
+            android:name="com.example.alcoholictimer.feature.about.AboutLicensesActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AlcoholicTimer" />
+
+    </application>
+
+</manifest>

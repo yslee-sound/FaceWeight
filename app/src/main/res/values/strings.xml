@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Alcoholic Timer</string>
+
+    <!-- AllRecords screen strings -->
+    <string name="all_records_title">모든 기록</string>
+    <string name="cd_navigate_back">뒤로가기</string>
+    <string name="error_loading_records">기록을 불러오는 데 실패했어요</string>
+    <string name="retry">다시 시도</string>
+    <string name="empty_records_title">기록이 없습니다</string>
+    <string name="empty_records_subtitle">첫 번째 금주 기록을 시작해보세요!</string>
+    <string name="empty_records_cd">표시할 기록이 없습니다</string>
+    <!-- Delete all records -->
+    <string name="cd_delete_all_records">모든 기록 삭제</string>
+    <string name="all_records_delete_title">모든 기록 삭제</string>
+    <string name="all_records_delete_message">정말로 모든 금주 기록을 삭제하시겠습니까?&#10;삭제 후 복구할 수 없습니다.</string>
+    <string name="all_records_delete_confirm">모두 삭제</string>
+
+    <!-- Run screen -->
+    <string name="run_title">금주 진행</string>
+    <string name="stat_goal_days">목표일</string>
+    <string name="stat_level">Level</string>
+    <string name="stat_time">시간</string>
+
+    <string name="indicator_title_days">금주 일수</string>
+    <string name="indicator_title_time">시간</string>
+    <string name="indicator_title_saved_money">절약한 금액</string>
+    <string name="indicator_title_saved_hours">절약한 시간</string>
+    <string name="indicator_title_life_gain">기대 수명+</string>
+    <string name="tap_to_switch_indicator">탭하여 다른 지표 보기</string>
+
+    <string name="cd_stop">정지</string>
+    <string name="cd_continue">계속</string>
+
+    <string name="toast_goal_completed">금주 목표를 달성했습니다!</string>
+
+    <!-- Update Snackbar (Flexible download completed) -->
+    <string name="update_downloaded_restart_prompt">업데이트가 다운로드되었습니다. 다시 시작하여 설치하세요.</string>
+    <string name="action_restart">다시 시작</string>
+
+    <!-- Start overlay -->
+    <string name="checking_update">업데이트 확인 중&#8230;</string>
+
+    <!-- Quit screen -->
+    <string name="quit_title">금주 종료</string>
+    <string name="quit_confirm_title">정말 멈추시겠어요?</string>
+    <string name="quit_confirm_subtitle">지금까지 잘 해오셨는데&#8230;</string>
+    <string name="stat_total_days">총 금주 일수</string>
+    <string name="stat_saved_money_short">절약한 금액</string>
+    <string name="stat_saved_hours_short">절약한 시간</string>
+
+    <!-- Detail screen -->
+    <string name="detail_title">금주 기록 상세</string>
+    <string name="dialog_delete_title">기록 삭제</string>
+    <string name="dialog_delete_message">정말로 이 금주 기록을 삭제하시겠습니까?&#10;삭제 후 복구할 수 없습니다.</string>
+    <string name="dialog_delete_confirm">삭제</string>
+    <string name="dialog_cancel">취소</string>
+    <string name="detail_start_label">시작:</string>
+    <string name="detail_end_label">종료:</string>
+    <string name="detail_progress_rate">목표 달성률</string>
+    <string name="detail_progress_current">진행: %1$s일</string>
+    <string name="detail_progress_target">목표: %1$d일</string>
+    <string name="detail_today_time">오늘 - %1$s</string>
+    <string name="unit_day">일</string>
+
+    <!-- About screen (앱 정보) -->
+    <string name="about_title">앱 정보</string>
+    <string name="about_version_info">버전 정보</string>
+    <string name="about_open_license_notice">오픈 라이선스 고지</string>
+    <string name="about_section_app_icon">앱 아이콘</string>
+    <string name="about_label_original_work">원본 저작물</string>
+    <string name="about_label_author">원저작자</string>
+    <string name="about_label_source">출처</string>
+    <string name="about_label_source_link">출처 링크</string>
+    <string name="about_label_license">라이선스</string>
+    <string name="about_label_changes">변경 사항</string>
+
+    <!-- Updated license notice values -->
+    <string name="about_value_icon_name">Free Wayfinding vector icons - Guidance icon set</string>
+    <string name="about_value_icon_author">Streamline and Vincent le moign</string>
+    <string name="about_value_source_url">https://www.figma.com/community/file/1227184301417272677/free-wayfinding-vector-icons-guidance-icon-set</string>
+
+    <string name="about_value_license_cc_by">Creative Commons Attribution 4.0 International (CC BY 4.0)</string>
+    <string name="about_value_license_cc_by_url">https://creativecommons.org/licenses/by/4.0/</string>
+    <string name="about_value_change_desc">아이콘의 색상 및 모양 일부를 수정하여 사용함.</string>
+    <string name="about_notice_compliance">본 앱은 CC BY 4.0 조건에 따라 적절한 저작자 표시, 출처 및 라이선스 링크 제공, 변경 사항 고지를 준수합니다.</string>
+
+    <string name="action_copy">복사</string>
+    <string name="toast_copied">주소를 복사했습니다.</string>
+</resources>

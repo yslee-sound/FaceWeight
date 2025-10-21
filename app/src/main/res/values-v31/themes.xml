@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 12+ Main theme overrides to avoid duplicate splash background -->
+    <style name="Theme.AlcoholicTimer" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <!-- Use plain white to avoid splash icon reappearing in background on 31+ -->
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- Android 12+ Splash theme using SplashScreen attributes on app-based theme -->
+    <style name="Theme.AlcoholicTimer.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@android:color/white</item>
+        <!-- inset 래퍼로 안전 여백 확보 -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_app_icon_inset</item>
+        <item name="windowSplashScreenIconBackgroundColor">@android:color/transparent</item>
+        <item name="postSplashScreenTheme">@style/Theme.AlcoholicTimer</item>
+        <!-- 스플래시 동안도 상단 경계선이 보이지 않도록 -->
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>

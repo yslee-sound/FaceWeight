@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 앱 전역 테마: 플랫폼에 존재하는 NoActionBar 테마를 부모로 사용 -->
+    <style name="Theme.AlcoholicTimer" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <!-- 상태바를 시스템이 항상 표시하도록 보장 -->
+        <item name="android:windowFullscreen">false</item>
+        <!-- 상태바 배경은 흰색 (라이트 테마에 맞춤) -->
+        <item name="android:statusBarColor">@android:color/white</item>
+
+        <!-- Splash와 동일한 배경을 유지하여 전환 시 깜빡임 제거 -->
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <!-- 일부 기기에서 상태바 아래 얇은 선(오버레이) 제거 -->
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- 스플래시 테마(Pre-Android 12 + backport용) -->
+    <style name="Theme.AlcoholicTimer.Splash" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <!-- 윈도우 배경 자체에 아이콘을 그려 백포트 미동작 시에도 표시 보장 -->
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <!-- backport가 읽는 속성들 -->
+        <item name="windowSplashScreenBackground">@android:color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_app_icon</item>
+        <item name="windowSplashScreenIconBackgroundColor">@android:color/transparent</item>
+        <item name="postSplashScreenTheme">@style/Theme.AlcoholicTimer</item>
+        <!-- API 31 미만에서 호환 레이아웃이 요구하는 아이콘 크기 속성(필수) -->
+        <item name="splashScreenIconSize">240dp</item>
+    </style>
+</resources>

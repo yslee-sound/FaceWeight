@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- 세로 고정은 제품 정책에 따른 의도적인 설정이므로 Manifest에서만 무시 -->
+    <issue id="DiscouragedApi" severity="ignore">
+        <ignore path="src/main/AndroidManifest.xml" />
+    </issue>
+
+    <!-- 예고성 AGP 마이너 업데이트 알림은 개발 정책상 무시 -->
+    <issue id="AndroidGradlePluginVersion" severity="ignore" />
+
+    <!-- 기존 규칙 유지 (과거 규칙과의 호환) -->
+    <issue id="LockedOrientationActivity" severity="ignore" />
+</lint>

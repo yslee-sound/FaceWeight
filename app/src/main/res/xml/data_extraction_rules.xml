@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- user_settings(현재 진행 상태 포함) 은 클라우드 백업 제외 -->
+        <exclude domain="sharedpref" path="user_settings.xml" />
+    </cloud-backup>
+    <device-transfer>
+        <!-- 기기 간 전송에서도 제외 -->
+        <exclude domain="sharedpref" path="user_settings.xml" />
+    </device-transfer>
+</data-extraction-rules>
+

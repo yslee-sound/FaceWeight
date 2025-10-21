@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- API 23+ 전용: 상태바 아이콘을 어둡게 표시하여 흰 배경 위에서도 가독성 확보 -->
+    <style name="Theme.AlcoholicTimer" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Splash와 동일 배경으로 전환 깜빡임 제거 -->
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <!-- 상단 경계선(오버레이) 제거 -->
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="Theme.AlcoholicTimer.Splash" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <!-- 윈도우 배경 자체에 아이콘을 그려 표시 보장 -->
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="windowSplashScreenBackground">@android:color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_app_icon</item>
+        <item name="windowSplashScreenIconBackgroundColor">@android:color/transparent</item>
+        <item name="postSplashScreenTheme">@style/Theme.AlcoholicTimer</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="splashScreenIconSize">240dp</item>
+        <!-- 상단 경계선(오버레이) 제거 -->
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>

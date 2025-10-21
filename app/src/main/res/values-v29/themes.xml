@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 10+ (API 29+)에서 상태바/내비바 대비 강제(구분선 느낌의 스크림)를 끄기 -->
+    <style name="Theme.AlcoholicTimer" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <!-- 기존 설정 유지 -->
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Splash와 동일 배경으로 전환 깜빡임 제거 -->
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <!-- 대비 강제 해제: 얇은 상단 구분선 제거 -->
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <!-- 오버레이 제거 -->
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="Theme.AlcoholicTimer.Splash" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <!-- 윈도우 배경 자체에 아이콘을 그려 표시 보장 -->
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="windowSplashScreenBackground">@android:color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_app_icon</item>
+        <item name="windowSplashScreenIconBackgroundColor">@android:color/transparent</item>
+        <item name="postSplashScreenTheme">@style/Theme.AlcoholicTimer</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="splashScreenIconSize">240dp</item>
+        <!-- 대비 강제 해제 및 오버레이 제거 -->
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>

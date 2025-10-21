@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- Soft tinted background instead of pure white for better contrast -->
+    <solid android:color="@color/icon_launcher_bg" />
+</shape>

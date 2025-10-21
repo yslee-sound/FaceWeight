@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- 전체 금주 진행 상태(start_time, target_days 등) 저장된 user_settings.xml 을 백업/복원 대상에서 제외 -->
+    <exclude domain="sharedpref" path="user_settings.xml" />
+</full-backup-content>
+

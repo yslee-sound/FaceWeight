@@ -1,0 +1,84 @@
+You are an expert Android/Jetpack Compose engineer. Apply the following Edge-to-Edge window insets, IME (keyboard), and Drawer interaction policy to this repository. Make precise, minimal, verifiable edits and validate by building. If ambiguities exist, infer from project conventions and proceed.
+
+Goal
+- Remove overly large bottom spacing on 3-button navigation devices.
+- Prevent keyboard from overlapping bottom controls on input screens.
+- Keep consistent, predictable insets handling across screens.
+- Stabilize Drawer behavior while typing: no layout jumps, no background click-through, no keyboard covering the drawer.
+
+High-level policy
+1) Turn on edge-to-edge once globally:
+   - In the app's base Activity onCreate, ensure: WindowCompat.setDecorFitsSystemWindows(window, false)
+2) AppBar: Apply only top (status bars) insets to the AppBar container.
+3) Content root (global): Apply only horizontal safe area insets. Do NOT apply bottom insets globally.
+4) Input screens: Add imePadding() to the root container OR compute bottom padding as the larger of IME and navigation bar bottom, and apply it to content/bottom controls.
+5) List/detail screens: Avoid applying bottom safeDrawing or systemBars padding to the root; use contentPadding on lazy lists for spacing only.
+6) Drawer + IME: When opening the drawer, immediately clear focus and hide the keyboard; add status/navigation bars padding to the drawer sheet; enable an input guard from the first frame of the open animation; keep a short grace period after close.
+7) Avoid double-applying insets on both parent and child containers.
+
+Search & triage (run across the repo)
+- safeDrawing.only(WindowInsetsSides.Bottom
+- systemBarsPadding()
+- navigationBarsPadding(
+- windowInsetsPadding(
+- imePadding(
+- statusBarsPadding()
+- TextField(, OutlinedTextField(, BasicTextField(
+- ModalNavigationDrawer, ModalDrawerSheet, DrawerValue.Open
+- LocalSoftwareKeyboardController, LocalFocusManager
+
+Required edits (adapt names/paths to the target repo)
+A. Base screen / scaffold
+- AppBar container: .windowInsetsPadding(WindowInsets.statusBars)
+- Scaffold contentWindowInsets = WindowInsets(0, 0, 0, 0) (or equivalent so Scaffold doesn’t add extra paddings)
+- Screen root: .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+
+B. Remove global bottom insets
+- Eliminate usages that add bottom safeDrawing/systemBars/navigation bars padding at the screen root.
+
+C. Input screens
+- Simple path: Add .imePadding() to the root container with text input.
+- If there is a floating/bottom-fixed button, compute:
+  val navBarBottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+  val imeBottom = WindowInsets.ime.asPaddingValues().calculateBottomPadding()
+  val effectiveBottom = if (navBarBottom > imeBottom) navBarBottom else imeBottom
+  // Reserve vertical space so content does not collide with the button
+  val buttonSize = 96.dp
+  val extraGap = 32.dp
+  val reservedBottom = (buttonSize / 2) + extraGap + effectiveBottom
+  Column(Modifier.padding(bottom = reservedBottom)) { ... }
+  Box(Modifier.align(Alignment.BottomCenter).padding(bottom = effectiveBottom + 24.dp)) { BottomButton() }
+
+D. Lists
+- Keep LazyColumn contentPadding minimal (e.g., top/bottom = 12.dp), avoid bottom insets at the root Box.
+
+E. Drawer + IME
+- When opening the drawer (button or gesture):
+  - LocalFocusManager.clearFocus(force = true)
+  - LocalSoftwareKeyboardController.current?.hide()
+- Add .statusBarsPadding() and .navigationBarsPadding() to ModalDrawerSheet root.
+- From the first frame of the open animation until a short grace period after close (e.g., 200ms), enable a pointer-input guard overlay that consumes all pointer events.
+- Keep visual hierarchy clear (optional): add a subtle blur/scrim to background while drawer is open.
+
+Build & verify (Windows/cmd)
+- Debug Kotlin quick build:
+  gradlew.bat :app:compileDebugKotlin --console=plain -x lint -x test
+- Acceptance:
+  - Build succeeds
+  - On 3-button navigation devices, there is no extra gap above the nav bar.
+  - When the keyboard opens, bottom controls remain fully visible and spaced.
+  - Opening the drawer while typing: keyboard hides, no layout jump, no background click-through, drawer not covered by the keyboard.
+
+Do
+- Make the smallest set of changes needed; preserve existing style
+- Prefer local, screen-specific insets over global bottom insets
+- Verify with a build and fix any introduced errors
+
+Don’t
+- Add bottom safeDrawing/systemBars padding globally
+- Double-apply insets on nested containers
+
+Deliverables
+- Code edits implementing the policy (Base screen, input screens, drawer handlers)
+- A concise summary of changes (file paths and what changed)
+- A quick guide in docs/ if one does not exist (docs/INSETS_AND_IME_GUIDE.md)
