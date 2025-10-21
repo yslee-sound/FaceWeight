@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Alcoholic Timer</string>
+    <string name="app_name">Face Weight</string>
 
     <!-- AllRecords screen strings -->
     <string name="all_records_title">모든 기록</string>

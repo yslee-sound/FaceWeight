@@ -20,7 +20,7 @@
 
         <!-- 메인 액티비티 (시작 화면) -->
         <activity
-            android:name="com.example.alcoholictimer.feature.start.StartActivity"
+            android:name="com.sweetapps.faceweight.feature.start.StartActivity"
             android:exported="true"
             android:theme="@style/Theme.AlcoholicTimer.Splash"
             android:windowSoftInputMode="adjustPan">
@@ -32,76 +32,76 @@
 
         <!-- 기록 화면 -->
         <activity
-            android:name="com.example.alcoholictimer.feature.records.RecordsActivity"
+            android:name="com.sweetapps.faceweight.feature.records.RecordsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AlcoholicTimer" />
 
         <!-- 모든 기록 화면 -->
         <activity
-            android:name="com.example.alcoholictimer.feature.records.AllRecordsActivity"
+            android:name="com.sweetapps.faceweight.feature.records.AllRecordsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AlcoholicTimer" />
 
         <!-- 레벨 화면 -->
         <activity
-            android:name="com.example.alcoholictimer.feature.level.LevelActivity"
+            android:name="com.sweetapps.faceweight.feature.level.LevelActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AlcoholicTimer" />
 
         <!-- 설정 화면 -->
         <activity
-            android:name="com.example.alcoholictimer.feature.settings.SettingsActivity"
+            android:name="com.sweetapps.faceweight.feature.settings.SettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AlcoholicTimer" />
 
         <!-- 금주 진행 화면 -->
         <activity
-            android:name="com.example.alcoholictimer.feature.run.RunActivity"
+            android:name="com.sweetapps.faceweight.feature.run.RunActivity"
             android:exported="false"
             android:theme="@style/Theme.AlcoholicTimer" />
 
         <!-- 금주 종료 확인 화면 -->
         <activity
-            android:name="com.example.alcoholictimer.feature.run.QuitActivity"
+            android:name="com.sweetapps.faceweight.feature.run.QuitActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AlcoholicTimer" />
 
         <!-- 세부 기록 화면 -->
         <activity
-            android:name="com.example.alcoholictimer.feature.detail.DetailActivity"
+            android:name="com.sweetapps.faceweight.feature.detail.DetailActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AlcoholicTimer" />
 
         <!-- 별명 편집 화면 -->
         <activity
-            android:name="com.example.alcoholictimer.feature.profile.NicknameEditActivity"
+            android:name="com.sweetapps.faceweight.feature.profile.NicknameEditActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AlcoholicTimer" />
 
         <!-- 사용자 기록 추가 화면 -->
         <activity
-            android:name="com.example.alcoholictimer.feature.addrecord.AddRecordActivity"
+            android:name="com.sweetapps.faceweight.feature.addrecord.AddRecordActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AlcoholicTimer" />
 
         <!-- 앱 정보 화면 -->
         <activity
-            android:name="com.example.alcoholictimer.feature.about.AboutActivity"
+            android:name="com.sweetapps.faceweight.feature.about.AboutActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AlcoholicTimer" />
 
         <!-- 오픈 라이선스 상세 화면 -->
         <activity
-            android:name="com.example.alcoholictimer.feature.about.AboutLicensesActivity"
+            android:name="com.sweetapps.faceweight.feature.about.AboutLicensesActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AlcoholicTimer" />
