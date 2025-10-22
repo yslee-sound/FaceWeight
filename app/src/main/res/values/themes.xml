@@ -16,13 +16,17 @@
     <!-- 스플래시 테마(Pre-Android 12 + backport용) -->
     <style name="Theme.FaceWeight.Splash" parent="@android:style/Theme.DeviceDefault.NoActionBar">
         <!-- 윈도우 배경 자체에 아이콘을 그려 백포트 미동작 시에도 표시 보장 -->
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:windowBackground">@android:color/white</item>
         <!-- backport가 읽는 속성들 -->
         <item name="windowSplashScreenBackground">@android:color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_app_icon</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_app_icon_foreground</item>
         <item name="windowSplashScreenIconBackgroundColor">@android:color/transparent</item>
         <item name="postSplashScreenTheme">@style/Theme.FaceWeight</item>
         <!-- API 31 미만에서 호환 레이아웃이 요구하는 아이콘 크기 속성(필수) -->
         <item name="splashScreenIconSize">240dp</item>
     </style>
+
+    <!-- API <23 호환: 매니페스트가 참조하는 Theme.AlcoholicTimer를 기본 FaceWeight 스타일로 매핑 -->
+    <style name="Theme.AlcoholicTimer" parent="@style/Theme.FaceWeight" />
+    <style name="Theme.AlcoholicTimer.Splash" parent="@style/Theme.FaceWeight.Splash" />
 </resources>

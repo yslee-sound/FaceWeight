@@ -4,5 +4,5 @@
     android:insetTop="12dp"
     android:insetRight="12dp"
     android:insetBottom="12dp"
-    android:drawable="@drawable/ic_app_icon_foreground" />
+    android:drawable="@drawable/ic_app_icon_monochrome" />
 

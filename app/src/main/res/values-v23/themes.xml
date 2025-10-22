@@ -15,7 +15,7 @@
         <!-- 윈도우 배경 자체에 아이콘을 그려 표시 보장 -->
         <item name="android:windowBackground">@drawable/splash_screen</item>
         <item name="windowSplashScreenBackground">@android:color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_app_icon</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_app_icon_foreground</item>
         <item name="windowSplashScreenIconBackgroundColor">@android:color/transparent</item>
         <item name="postSplashScreenTheme">@style/Theme.AlcoholicTimer</item>
         <item name="android:statusBarColor">@android:color/white</item>

@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import com.sweetapps.faceweight.core.ui.theme.AlcoholicTimerTheme
 import com.sweetapps.faceweight.feature.level.LevelActivity
 import com.sweetapps.faceweight.feature.profile.NicknameEditActivity
-import com.sweetapps.faceweight.feature.run.RunActivity
 import com.sweetapps.faceweight.feature.settings.SettingsActivity
 import com.sweetapps.faceweight.feature.start.StartActivity
 import kotlinx.coroutines.launch
@@ -73,9 +72,10 @@ abstract class BaseActivity : ComponentActivity() {
     }
 
     // Returns the drawer menu title that matches current screen, or null if none
+    // Changed drawer top-level label from "금주" to "FaceWeight"
     private fun currentDrawerSelection(): String? = when (this) {
-        is RunActivity, is StartActivity,
-        is com.sweetapps.faceweight.feature.run.QuitActivity -> "금주"
+        is StartActivity,
+        is com.sweetapps.faceweight.feature.faceweight.FaceWeightEntryActivity -> "FaceWeight"
         is com.sweetapps.faceweight.feature.records.RecordsActivity,
         is com.sweetapps.faceweight.feature.records.AllRecordsActivity,
         is com.sweetapps.faceweight.feature.detail.DetailActivity -> "기록"
@@ -340,21 +340,10 @@ abstract class BaseActivity : ComponentActivity() {
 
     private fun handleMenuSelection(menuItem: String) {
         when (menuItem) {
-            "금주" -> {
-                val sharedPref = getSharedPreferences("user_settings", MODE_PRIVATE)
-                val startTime = sharedPref.getLong("start_time", 0L)
-                if (startTime > 0) {
-                    if (this !is RunActivity) navigateToActivity(RunActivity::class.java)
-                } else {
-                    if (this !is StartActivity) {
-                        // 드로어 내비게이션: StartActivity 진입 시 스플래시 생략 플래그 전달(API<31)
-                        val intent = Intent(this, StartActivity::class.java).apply {
-                            putExtra("skip_splash", true)
-                        }
-                        startActivity(intent)
-                        @Suppress("DEPRECATION")
-                        overridePendingTransition(0, 0)
-                    }
+            "FaceWeight" -> {
+                // Open FaceWeightEntryActivity directly from drawer for quick access to FaceWeight UI
+                if (this !is com.sweetapps.faceweight.feature.faceweight.FaceWeightEntryActivity) {
+                    navigateToActivity(com.sweetapps.faceweight.feature.faceweight.FaceWeightEntryActivity::class.java)
                 }
             }
             "기록" -> if (this !is com.sweetapps.faceweight.feature.records.RecordsActivity) {
@@ -392,8 +381,9 @@ fun DrawerMenu(
     onNicknameClick: () -> Unit,
     onItemSelected: (String) -> Unit
 ) {
+    // Drawer menu labels: change top item label to 'FaceWeight'
     val menuItems = listOf(
-        "금주" to Icons.Filled.PlayArrow,
+        "FaceWeight" to Icons.Filled.PlayArrow,
         "기록" to Icons.AutoMirrored.Filled.List,
         "레벨" to Icons.Filled.Star
     )

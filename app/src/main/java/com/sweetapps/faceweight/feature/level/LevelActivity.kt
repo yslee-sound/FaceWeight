@@ -36,6 +36,7 @@ import kotlinx.coroutines.delay
 import java.util.Locale
 import androidx.compose.foundation.BorderStroke
 import com.sweetapps.faceweight.core.ui.LocalSafeContentPadding
+import com.sweetapps.faceweight.R
 
 class LevelActivity : BaseActivity() {
 

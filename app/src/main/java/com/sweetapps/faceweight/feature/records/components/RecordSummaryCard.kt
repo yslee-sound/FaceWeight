@@ -23,6 +23,7 @@ import com.sweetapps.faceweight.core.ui.AppAlphas
 import com.sweetapps.faceweight.core.ui.AppElevation
 import java.text.SimpleDateFormat
 import java.util.*
+import com.sweetapps.faceweight.R
 
 @Composable
 fun RecordSummaryCard(

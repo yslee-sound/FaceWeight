@@ -29,6 +29,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import androidx.core.content.ContextCompat
 import com.sweetapps.faceweight.core.ui.LocalSafeContentPadding
+import com.sweetapps.faceweight.R
 
 class AboutLicensesActivity : BaseActivity() {
     override fun getScreenTitle(): String = getString(R.string.about_open_license_notice)

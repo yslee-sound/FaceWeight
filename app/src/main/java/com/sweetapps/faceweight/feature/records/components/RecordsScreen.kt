@@ -42,6 +42,7 @@ import kotlin.math.min
 import com.sweetapps.faceweight.core.ui.AppElevation
 import com.sweetapps.faceweight.core.ui.LocalRequestGlobalLock
 import com.sweetapps.faceweight.core.ui.LocalSafeContentPadding
+import com.sweetapps.faceweight.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

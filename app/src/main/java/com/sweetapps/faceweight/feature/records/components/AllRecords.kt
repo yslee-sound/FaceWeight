@@ -25,6 +25,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import com.sweetapps.faceweight.core.ui.LocalSafeContentPadding
+import com.sweetapps.faceweight.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

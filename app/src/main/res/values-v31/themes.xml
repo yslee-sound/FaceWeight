@@ -15,8 +15,8 @@
     <!-- Android 12+ Splash theme using SplashScreen attributes on app-based theme -->
     <style name="Theme.AlcoholicTimer.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@android:color/white</item>
-        <!-- inset 래퍼로 안전 여백 확보 -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_app_icon_inset</item>
+        <!-- Animated icon must be Vector/PNG/JPG/WEBP, avoid adaptive/layer/inset -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_app_icon_foreground</item>
         <item name="windowSplashScreenIconBackgroundColor">@android:color/transparent</item>
         <item name="postSplashScreenTheme">@style/Theme.AlcoholicTimer</item>
         <!-- 스플래시 동안도 상단 경계선이 보이지 않도록 -->

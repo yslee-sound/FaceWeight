@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Camera runtime permission required for CameraX capture -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
     <!-- SDK 30+ 패키지 가시성: Play Store 존재 확인을 위해 선언 -->
     <queries>
         <package android:name="com.android.vending" />
@@ -11,24 +15,31 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/app_icon"
-        android:roundIcon="@mipmap/app_icon"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AlcoholicTimer"
         tools:targetApi="31">
 
-        <!-- 메인 액티비티 (시작 화면) -->
+        <!-- 메인 액티비티: StartActivity → FaceWeightEntryActivity로 교체 -->
         <activity
-            android:name="com.sweetapps.faceweight.feature.start.StartActivity"
+            android:name="com.sweetapps.faceweight.feature.faceweight.FaceWeightEntryActivity"
             android:exported="true"
-            android:theme="@style/Theme.AlcoholicTimer.Splash"
-            android:windowSoftInputMode="adjustPan">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AlcoholicTimer.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 기존 StartActivity: 런처 해제 -->
+        <activity
+            android:name="com.sweetapps.faceweight.feature.start.StartActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AlcoholicTimer.Splash"
+            android:windowSoftInputMode="adjustPan" />
 
         <!-- 기록 화면 -->
         <activity
@@ -54,19 +65,6 @@
         <!-- 설정 화면 -->
         <activity
             android:name="com.sweetapps.faceweight.feature.settings.SettingsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AlcoholicTimer" />
-
-        <!-- 금주 진행 화면 -->
-        <activity
-            android:name="com.sweetapps.faceweight.feature.run.RunActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AlcoholicTimer" />
-
-        <!-- 금주 종료 확인 화면 -->
-        <activity
-            android:name="com.sweetapps.faceweight.feature.run.QuitActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AlcoholicTimer" />
@@ -105,6 +103,24 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AlcoholicTimer" />
+
+        <!-- FaceWeight 카메라 캡처 액티비티 (스텁) -->
+        <activity
+            android:name="com.sweetapps.faceweight.feature.faceweight.FaceWeightCaptureActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AlcoholicTimer" />
+
+        <!-- FileProvider for sharing saved camera images -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
 

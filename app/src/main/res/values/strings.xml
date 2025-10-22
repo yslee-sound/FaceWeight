@@ -87,4 +87,29 @@
 
     <string name="action_copy">복사</string>
     <string name="toast_copied">주소를 복사했습니다.</string>
+
+    <!-- FaceWeight -->
+    <string name="faceweight_title">FaceWeight</string>
+    <string name="faceweight_entry_button">얼굴로 체형 매칭(베타)</string>
+    <!-- FaceWeight card UI -->
+    <string name="faceweight_card_title">FaceWeight 체형 매칭</string>
+    <string name="faceweight_card_subtitle">사진 한 장으로 닮은 샘플을 찾아 가상의 체중을 제안해요. (엔터테인먼트용)</string>
+    <string name="faceweight_action_camera">촬영하기</string>
+    <string name="faceweight_action_gallery">갤러리에서 선택</string>
+    <string name="cd_take_photo">사진 촬영</string>
+    <string name="cd_open_gallery">갤러리 열기</string>
+    <!-- FaceWeight entry action labels -->
+    <string name="faceweight_entry_camera_selected">촬영으로 진입함</string>
+    <string name="faceweight_entry_gallery_selected">갤러리로 진입함</string>
+    <string name="faceweight_entry_none_selected">직접 진입함</string>
+    <!-- FaceWeight Entry UI strings -->
+    <string name="faceweight_matched_label">닮은 샘플</string>
+    <string name="faceweight_similarity_format">유사도: %1$d%%</string>
+    <string name="faceweight_simulated_label">가상 체중</string>
+    <string name="faceweight_simulate_minus10">-10kg</string>
+    <string name="faceweight_simulate_minus5">-5kg</string>
+    <string name="faceweight_simulate_original">원본</string>
+    <string name="faceweight_simulate_plus5">+5kg</string>
+    <string name="faceweight_simulate_plus10">+10kg</string>
+    <string name="faceweight_simulate_hint">샘플 기반 가상의 체중을 제안합니다. 재미로만 활용하세요.</string>
 </resources>

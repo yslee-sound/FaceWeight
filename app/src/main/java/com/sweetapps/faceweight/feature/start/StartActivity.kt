@@ -1,6 +1,5 @@
 package com.sweetapps.faceweight.feature.start
 
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
@@ -9,13 +8,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,16 +22,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.edit
 import com.sweetapps.faceweight.core.ui.AppElevation
 import com.sweetapps.faceweight.core.ui.BaseActivity
 import com.sweetapps.faceweight.core.ui.StandardScreenWithBottomButton
 import com.sweetapps.faceweight.core.util.AppUpdateManager
 import com.sweetapps.faceweight.core.util.Constants
-import com.sweetapps.faceweight.feature.run.RunActivity
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -43,7 +41,6 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.compose.animation.AnimatedVisibility
@@ -53,9 +50,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import com.sweetapps.faceweight.core.ui.components.AppUpdateDialog
 import androidx.core.graphics.drawable.toDrawable
-import com.sweetapps.faceweight.feature.addrecord.components.TargetDaysBottomSheet
+import com.sweetapps.faceweight.R
 import android.graphics.Color as AndroidColor
 
 class StartActivity : BaseActivity() {
@@ -109,8 +107,8 @@ class StartActivity : BaseActivity() {
             // 남은 최소 오버레이 시간 계산 (API<31에서 setContent 지연 후엔 0일 수 있음)
             val elapsed = SystemClock.uptimeMillis() - splashStart
             val initialRemain = (minShowMillis - elapsed).coerceAtLeast(0L)
-            // API 30 이하에서 오버레이는 비활성화하여 이중 스플래시 방지
-            val usesComposeOverlay = false
+            // API 31+에서는 시스템 아이콘을 투명으로 두고 Compose 오버레이로 아이콘을 그린다
+            val usesComposeOverlay = Build.VERSION.SDK_INT >= 31
             setContent {
                 // 상단 시스템바 패딩은 적용, 하단은 개별 레이아웃에서 처리
                 BaseScreen(applyBottomInsets = false, applySystemBars = true) {
@@ -144,7 +142,7 @@ class StartActivity : BaseActivity() {
         }
     }
 
-    override fun getScreenTitle(): String = "금주 설정"
+    override fun getScreenTitle(): String = getString(R.string.faceweight_title)
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -211,9 +209,7 @@ fun StartScreenWithUpdate(
                         showUpdateDialog = true
                         isCheckingUpdate = false
                     },
-                    onNoUpdate = {
-                        isCheckingUpdate = false
-                    }
+                    onNoUpdate = { isCheckingUpdate = false }
                 )
             }
         }
@@ -270,7 +266,7 @@ fun StartScreenWithUpdate(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.splash_app_icon),
+                    painter = painterResource(id = R.drawable.ic_app_icon_foreground),
                     contentDescription = null,
                     modifier = Modifier.size(240.dp)
                 )
@@ -314,25 +310,7 @@ fun StartScreenWithUpdate(
 @Composable
 fun StartScreen(gateNavigation: Boolean = false, onDebugLongPress: (() -> Unit)? = null) {
     val context = LocalContext.current
-    val sharedPref = context.getSharedPreferences("user_settings", MODE_PRIVATE)
-    val startTime = sharedPref.getLong("start_time", 0L)
-    val timerCompleted = sharedPref.getBoolean("timer_completed", false)
-
-    // 진행 중 세션이 있고, 게이트가 내려가 있을 때만 Run 화면으로 이동
-    if (!gateNavigation && startTime != 0L && !timerCompleted) {
-        LaunchedEffect(Unit) {
-            context.startActivity(Intent(context, RunActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            })
-        }
-        return
-    }
-
-    // 목표 일수(정수, 0..999), 기본값 30
-    var targetDays by rememberSaveable { mutableIntStateOf(30) }
-    val isValid by remember { derivedStateOf { targetDays > 0 } }
-    var showDaysPicker by remember { mutableStateOf(false) }
-
+    // 상단 안내 카드 제거(목표기간 UI 삭제)
     Box(modifier = Modifier.fillMaxSize()) {
         StandardScreenWithBottomButton(
             topContent = {
@@ -347,135 +325,112 @@ fun StartScreen(gateNavigation: Boolean = false, onDebugLongPress: (() -> Unit)?
                         modifier = Modifier.fillMaxWidth().padding(24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        val baseTitleModifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(bottom = 24.dp)
-                        val titleModifier = if (onDebugLongPress != null) {
-                            baseTitleModifier.combinedClickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                                onClick = { onDebugLongPress() },
-                                onLongClick = { onDebugLongPress() }
-                            )
-                        } else baseTitleModifier
-
                         Text(
-                            text = "목표 기간 설정",
+                            text = stringResource(id = R.string.faceweight_title),
                             style = MaterialTheme.typography.titleLarge,
                             color = colorResource(id = R.color.color_title_primary),
-                            modifier = titleModifier
-                        )
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center,
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
-                        ) {
-                            // 선택 박스(클릭 시 3자리 다이얼 바텀시트 표시, 롱프레스: 데모 업데이트 트리거)
-                            Card(
-                                modifier = Modifier.width(120.dp).height(56.dp),
-                                shape = RoundedCornerShape(12.dp),
-                                colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.color_bg_card_light)),
-                                elevation = CardDefaults.cardElevation(defaultElevation = AppElevation.CARD)
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .padding(12.dp)
-                                        .combinedClickable(
-                                            interactionSource = remember { MutableInteractionSource() },
-                                            indication = null,
-                                            onClick = { showDaysPicker = true },
-                                            onLongClick = { onDebugLongPress?.invoke() }
-                                        ),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = targetDays.toString(),
-                                        style = MaterialTheme.typography.headlineLarge,
-                                        color = colorResource(id = R.color.color_indicator_days),
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Text(
-                                text = "일",
-                                style = MaterialTheme.typography.titleLarge,
-                                color = colorResource(id = R.color.color_indicator_label_gray)
-                            )
-                        }
-                        Text(
-                            text = "금주할 목표 기간을 선택해주세요",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = colorResource(id = R.color.color_hint_gray),
-                            textAlign = TextAlign.Center,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
                     }
                 }
-            },
-            bottomButton = {
-                Box(modifier = Modifier.size(96.dp), contentAlignment = Alignment.Center) {
-                    ModernStartButton(
-                        isEnabled = isValid,
-                        onStart = {
-                            val formatted = String.format(Locale.US, "%.6f", targetDays.toFloat()).toFloat()
-                            sharedPref.edit {
-                                putFloat("target_days", formatted)
-                                putLong("start_time", System.currentTimeMillis())
-                                putBoolean("timer_completed", false)
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // FaceWeight quick entry card (visible on Start screen)
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    elevation = CardDefaults.cardElevation(defaultElevation = AppElevation.CARD),
+                    border = BorderStroke(1.dp, colorResource(id = R.color.color_border_light))
+                ) {
+                    Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Image,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(24.dp)
+                                )
                             }
-                            context.startActivity(Intent(context, RunActivity::class.java))
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(id = R.string.faceweight_card_title),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = stringResource(id = R.string.faceweight_card_subtitle),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = colorResource(id = R.color.color_hint_gray),
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
                         }
-                    )
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            OutlinedButton(
+                                onClick = {
+                                    val intent = Intent(context, com.sweetapps.faceweight.feature.faceweight.FaceWeightEntryActivity::class.java).apply {
+                                        putExtra("entry_action", "camera")
+                                    }
+                                    context.startActivity(intent)
+                                },
+                                modifier = Modifier.weight(1f),
+                                shape = RoundedCornerShape(10.dp)
+                            ) {
+                                Icon(imageVector = Icons.Filled.PhotoCamera, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(text = stringResource(id = R.string.faceweight_action_camera))
+                            }
+                            OutlinedButton(
+                                onClick = {
+                                    val intent = Intent(context, com.sweetapps.faceweight.feature.faceweight.FaceWeightEntryActivity::class.java).apply {
+                                        putExtra("entry_action", "gallery")
+                                    }
+                                    context.startActivity(intent)
+                                },
+                                modifier = Modifier.weight(1f),
+                                shape = RoundedCornerShape(10.dp)
+                            ) {
+                                Icon(imageVector = Icons.Filled.PhotoLibrary, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(text = stringResource(id = R.string.faceweight_action_gallery))
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(
+                            onClick = {
+                                val intent = Intent(context, com.sweetapps.faceweight.feature.faceweight.FaceWeightEntryActivity::class.java).apply {
+                                    putExtra("entry_action", "camera")
+                                }
+                                context.startActivity(intent)
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary
+                            ),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Text(text = stringResource(id = R.string.faceweight_entry_button))
+                        }
+                    }
                 }
             },
-            imePaddingEnabled = false,
-            backgroundDecoration = {
-                // 워터마크: 배경 위/콘텐츠 아래 레이어에 중앙 배치
-                BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-                    val base = if (maxWidth < maxHeight) maxWidth else maxHeight
-                    val iconSize = base * 0.70f // 기존 0.35f에서 2배로 확대
-                    Image(
-                        painter = painterResource(id = R.drawable.splash_app_icon),
-                        contentDescription = null,
-                        modifier = Modifier.align(Alignment.Center).size(iconSize).alpha(0.12f)
-                    )
-                }
-            }
+            bottomButton = { }
         )
-
-        // 3자리 다이얼 바텀시트
-        if (showDaysPicker) {
-            TargetDaysBottomSheet(
-                initialValue = targetDays,
-                onConfirm = { picked ->
-                    targetDays = picked.coerceIn(0, 999)
-                    showDaysPicker = false
-                },
-                onDismiss = { showDaysPicker = false }
-            )
-        }
     }
 }
-
-@Composable
-fun ModernStartButton(isEnabled: Boolean, onStart: () -> Unit, modifier: Modifier = Modifier) {
-    Card(
-        onClick = { if (isEnabled) onStart() },
-        modifier = modifier.size(96.dp),
-        shape = CircleShape,
-        colors = CardDefaults.cardColors(
-            containerColor = if (isEnabled) colorResource(id = R.color.color_progress_primary) else colorResource(id = R.color.color_button_disabled)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (isEnabled) AppElevation.CARD_HIGH else AppElevation.CARD)
-    ) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Icon(Icons.Default.PlayArrow, contentDescription = "시작", tint = Color.White, modifier = Modifier.size(48.dp))
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun StartScreenPreview() { StartScreen() }
