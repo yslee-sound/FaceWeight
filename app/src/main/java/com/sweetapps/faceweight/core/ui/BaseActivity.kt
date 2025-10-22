@@ -95,6 +95,10 @@ abstract class BaseActivity : ComponentActivity() {
         onBackClick: (() -> Unit)? = null,
         bottomExtra: Dp = 24.dp, // 스크롤 화면 공통 추가 여백(디폴트 24dp)
         topBarActions: @Composable RowScope.() -> Unit = {},
+        // 상단 AppBar 노출 여부 (카메라 화면 등에서 숨김)
+        showTopBar: Boolean = true,
+        // 새로 추가: 제목 텍스트 표시 여부 (햄버거만 남기고 타이틀 숨기기용)
+        showTitle: Boolean = true,
         content: @Composable () -> Unit
     ) {
         AlcoholicTimerTheme(darkTheme = false, applySystemBars = applySystemBars) {
@@ -215,79 +219,86 @@ abstract class BaseActivity : ComponentActivity() {
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                         topBar = {
-                            Surface(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .then(if (applySystemBars) Modifier.windowInsetsPadding(WindowInsets.statusBars) else Modifier),
-                                shadowElevation = 0.dp,
-                                tonalElevation = 0.dp,
-                                color = Color.White
-                            ) {
-                                Column {
-                                    TopAppBar(
-                                        title = {
-                                            CompositionLocalProvider(
-                                                LocalDensity provides Density(LocalDensity.current.density, fontScale = 1.2f)
-                                            ) {
-                                                Text(
-                                                    text = getScreenTitle(),
-                                                    color = Color(0xFF2C3E50),
-                                                    fontWeight = FontWeight.SemiBold,
-                                                    style = MaterialTheme.typography.titleMedium
-                                                )
-                                            }
-                                        },
-                                        colors = TopAppBarDefaults.topAppBarColors(
-                                            containerColor = Color.Transparent,
-                                            titleContentColor = Color(0xFF2C3E50),
-                                            navigationIconContentColor = Color(0xFF2C3E50),
-                                            actionIconContentColor = Color(0xFF2C3E50)
-                                        ),
-                                        navigationIcon = {
-                                            Surface(
-                                                modifier = Modifier.padding(8.dp).size(48.dp),
-                                                shape = CircleShape,
-                                                color = Color(0xFFF8F9FA),
-                                                shadowElevation = 2.dp
-                                            ) {
-                                                IconButton(
-                                                    onClick = {
-                                                        // 전역 입력 잠금 + 포커스/키보드 정리 후 드로어 동작
-                                                        requestGlobalLock(300)
-                                                        focusManager.clearFocus(force = true)
-                                                        keyboardController?.hide()
+                            if (showTopBar) {
+                                Surface(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .then(if (applySystemBars) Modifier.windowInsetsPadding(WindowInsets.statusBars) else Modifier),
+                                    shadowElevation = 0.dp,
+                                    tonalElevation = 0.dp,
+                                    color = Color.White
+                                ) {
+                                    Column {
+                                        TopAppBar(
+                                            title = {
+                                                if (showTitle) {
+                                                    CompositionLocalProvider(
+                                                        LocalDensity provides Density(LocalDensity.current.density, fontScale = 1.2f)
+                                                    ) {
+                                                        Text(
+                                                            text = getScreenTitle(),
+                                                            color = Color(0xFF2C3E50),
+                                                            fontWeight = FontWeight.SemiBold,
+                                                            style = MaterialTheme.typography.titleMedium
+                                                        )
+                                                    }
+                                                } else {
+                                                    // 제목 숨김: 레이아웃 높이 유지용 빈 박스
+                                                    Spacer(Modifier.height(0.dp))
+                                                }
+                                            },
+                                            colors = TopAppBarDefaults.topAppBarColors(
+                                                containerColor = Color.Transparent,
+                                                titleContentColor = Color(0xFF2C3E50),
+                                                navigationIconContentColor = Color(0xFF2C3E50),
+                                                actionIconContentColor = Color(0xFF2C3E50)
+                                            ),
+                                            navigationIcon = {
+                                                Surface(
+                                                    modifier = Modifier.padding(8.dp).size(48.dp),
+                                                    shape = CircleShape,
+                                                    color = Color(0xFFF8F9FA),
+                                                    shadowElevation = 2.dp
+                                                ) {
+                                                    IconButton(
+                                                        onClick = {
+                                                            // 전역 입력 잠금 + 포커스/키보드 정리 후 드로어 동작
+                                                            requestGlobalLock(300)
+                                                            focusManager.clearFocus(force = true)
+                                                            keyboardController?.hide()
+                                                            if (showBackButton) {
+                                                                onBackClick?.invoke() ?: run { this@BaseActivity.onBackPressedDispatcher.onBackPressed() }
+                                                            } else {
+                                                                scope.launch { drawerState.open() }
+                                                            }
+                                                        }
+                                                    ) {
                                                         if (showBackButton) {
-                                                            onBackClick?.invoke() ?: run { this@BaseActivity.onBackPressedDispatcher.onBackPressed() }
+                                                            Icon(
+                                                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                                                contentDescription = "뒤로가기",
+                                                                tint = Color(0xFF2C3E50),
+                                                                modifier = Modifier.size(24.dp)
+                                                            )
                                                         } else {
-                                                            scope.launch { drawerState.open() }
+                                                            Icon(
+                                                                imageVector = Icons.Filled.Menu,
+                                                                contentDescription = "메뉴",
+                                                                tint = Color(0xFF2C3E50),
+                                                                modifier = Modifier.size(24.dp)
+                                                            )
                                                         }
                                                     }
-                                                ) {
-                                                    if (showBackButton) {
-                                                        Icon(
-                                                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                                            contentDescription = "뒤로가기",
-                                                            tint = Color(0xFF2C3E50),
-                                                            modifier = Modifier.size(24.dp)
-                                                        )
-                                                    } else {
-                                                        Icon(
-                                                            imageVector = Icons.Filled.Menu,
-                                                            contentDescription = "메뉴",
-                                                            tint = Color(0xFF2C3E50),
-                                                            modifier = Modifier.size(24.dp)
-                                                        )
-                                                    }
                                                 }
-                                            }
-                                        },
-                                        actions = { topBarActions() }
-                                    )
-                                    // Global subtle divider under app bar
-                                    HorizontalDivider(
-                                        thickness = 1.5.dp,
-                                        color = Color(0xFFE0E0E0)
-                                    )
+                                            },
+                                            actions = { topBarActions() }
+                                        )
+                                        // Global subtle divider under app bar
+                                        HorizontalDivider(
+                                            thickness = 1.5.dp,
+                                            color = Color(0xFFE0E0E0)
+                                        )
+                                    }
                                 }
                             }
                         },

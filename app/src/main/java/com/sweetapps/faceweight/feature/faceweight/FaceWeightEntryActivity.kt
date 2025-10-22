@@ -76,7 +76,8 @@ class FaceWeightEntryActivity : BaseActivity() {
         }
 
         setContent {
-            BaseScreen {
+            val inCamera = imageUri.isNullOrBlank() && entryAction != "gallery" && entryAction != "camera_result"
+            BaseScreen(showTopBar = !inCamera) {
                 // imageUri 또는 gallery로 진입 시 기존 결과 화면 유지, 그 외에는 카메라 메인 화면
                 if (!imageUri.isNullOrBlank() || entryAction == "gallery" || entryAction == "camera_result") {
                     FaceWeightResultScreen(entryAction, imageUri)
